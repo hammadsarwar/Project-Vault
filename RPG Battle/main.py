@@ -39,7 +39,7 @@ while running:
 
         current_mp = player1.get_mp()
 
-        if cost > current_mp:
+        if spell.cost > current_mp:
             print(bcolors.FAIL + "\nNot Enough MP!" + bcolors.ENDC)
             continue
 
