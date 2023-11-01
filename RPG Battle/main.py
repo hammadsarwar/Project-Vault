@@ -29,10 +29,10 @@ player_items = [{"item" : potion, "quantity" : 15}, {"item" : hipotion, "quantit
 
 
 # Instantiate People
-player1 = Person("Hammad:", 3260, 65, 60, 35, player_spells, player_items)
-player2 = Person("Valos :", 4160, 65, 60, 35, player_spells, player_items)
-player3 = Person("Cook  :", 3089, 65, 60, 35, player_spells, player_items)
-enemy = Person("Nigga   :", 1200, 60, 245, 25, [], [])
+player1 = Person("Hammad:", 3260, 100, 60, 35, player_spells, player_items)
+player2 = Person("Valos :", 4160, 100, 60, 35, player_spells, player_items)
+player3 = Person("Cook  :", 3089, 100, 60, 35, player_spells, player_items)
+enemy = Person("Nigga   :", 12000, 120, 245, 25, [], [])
 
 players = [player1, player2, player3]
 
