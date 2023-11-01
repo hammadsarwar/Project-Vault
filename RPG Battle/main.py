@@ -33,8 +33,13 @@ player_items = [{"item" : potion, "quantity" : 15}, {"item" : hipotion, "quantit
 player1 = Person("Hammad:", 3260, 100, 60, 35, player_spells, player_items)
 player2 = Person("Valos :", 4160, 100, 60, 35, player_spells, player_items)
 player3 = Person("Cook  :", 3089, 100, 60, 35, player_spells, player_items)
-enemy = Person("Nigga🥷  :", 12000, 120, 245, 25, [], [])
 
+
+enemy1 = Person("Nigga1  :", 1250, 130, 560, 325, [], [])
+enemy2 = Person("Nigga🥷  :", 18340, 701, 525, 25, [], [])
+enemy3 = Person("Nigga2  :", 1250, 130, 560, 325, [], [])
+
+enemies = [enemy1, enemy2, enemy3]
 players = [player1, player2, player3]
 
 running = True
@@ -50,7 +55,8 @@ while running:
 
     print("\n")
 
-    enemy.get_enemy_stats()
+    for enemy in enemies:
+        enemy.get_enemy_stats()
 
     for player in players:
         player.choose_action()
@@ -58,10 +64,11 @@ while running:
         index = int(choice) - 1
 
         if index == 0:
+            enemy = player.choose_target(enemies)
             dmg = player.generate_damage()
-            enemy.take_damage(dmg)
+            enemies[enemy].take_damage(dmg)
 
-            print("You attacked for", dmg, "points of damage.")
+            print("You attacked " + enemies[enemy].name + " for", dmg, "points of damage.")
         elif index == 1:
             player.choose_magic()
             magic_choice = int(input("    Choose magic: ")) - 1
@@ -84,8 +91,11 @@ while running:
                 player.heal(magic_dmg)
                 print(bcolors.OKBLUE + "\n" + spell.name + " heals for" + str(magic_dmg), "HP." + bcolors.ENDC)
             elif spell.type == "black":
-                enemy.take_damage(magic_dmg)
-                print(bcolors.OKBLUE + spell.name + " deals", str(magic_dmg), "points of damage." + bcolors.ENDC)
+                enemy = player.choose_target(enemies)
+                enemies[enemy].take_damage(magic_dmg)
+
+
+                print(bcolors.OKBLUE + spell.name + " deals", str(magic_dmg), "points of damage to " + enemies[enemy].name + bcolors.ENDC)
 
         elif index == 2:
             player.choose_item()
@@ -118,18 +128,20 @@ while running:
 
                 print(bcolors.OKGREEN + "\n" + item.name + " fully restores HP/MP" + bcolors.ENDC)
             elif item.type == "attack":
-                enemy.take_damage(item.prop)
-                print(bcolors.FAIL + "\n" + item.name + " deals", str(item.prop), "points of damage" + bcolors.ENDC)
+                enemy = player.choose_target(enemies)
+                enemies[enemy].take_damage(item.prop)
+
+                print(bcolors.FAIL + "\n" + item.name + " deals", str(item.prop), "points of damage to" + enemies[enemy].name + bcolors.ENDC)
 
     enemy_choice = 1
 
     target = random.randrange(0, 3) # It will select random player index
-    enemy_dmg = enemy.generate_damage()
+    enemy_dmg = enemies[0].generate_damage()
     players[target].take_damage(enemy_dmg)  # Feed it here as an index to damage any random player
 
     print("Enemy attacks for", enemy_dmg, "points of damage.")
 
-    
+    # There is some kind of error in this part fix this issue it wont let me proceed
     if enemy.get_hp() == 0:
         print(bcolors.OKGREEN + "You Win!" + bcolors.ENDC)
         running = False
