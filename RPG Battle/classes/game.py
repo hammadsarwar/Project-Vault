@@ -78,6 +78,36 @@ class Person:
             print("        " + str(i) + ".", item["item"].name + ":", item["item"].description, " (x" + str(item["quantity"]) + ")")
             i += 1
 
+    def get_enemy_stats(self):
+        hp_bar = ""
+        bar_ticks = (self.hp / self.maxhp) * 100 / 2
+
+        while bar_ticks > 0:          # Creating HP bar for enemy
+            hp_bar += "█"             # Add so we can concatenate the string
+            bar_ticks -= 1
+
+        while len(hp_bar) < 50:      # 50 because we will hard code 50 charcters space for bar
+            hp_bar += " "
+
+        hp_string = str(self.hp) + "/" + str(self.maxhp)
+        current_hp = ""
+
+        if len(hp_string) < 11:
+            decreased = 11 - len(hp_string)
+
+            while decreased > 0:
+                current_hp += " "
+                decreased -= 1
+
+            current_hp += hp_string
+        else:
+            current_hp = hp_string
+
+        print("                          __________________________________________________")
+        print(bcolors.BOLD + self.name + "     " +
+            current_hp + "|" + bcolors.FAIL + hp_bar + bcolors.ENDC + "|")
+
+
     def stats(self):
         hp_bar = ""
         bar_ticks = (self.hp / self.maxhp) * 100 / 4
@@ -89,11 +119,11 @@ class Person:
             hp_bar += "█"
             bar_ticks -= 1
 
-        while len(hp_bar) < 25:
+        while len(hp_bar) < 25:   # 25 since we hard coded 25 character space for the bar
             hp_bar += " "
 
         while mp_ticks > 0:
-            mp_bar += "█"
+            mp_bar += "█"  # This updates the HP bar to show how much hp's left
             mp_ticks -= 1
 
         while len(mp_bar) < 10:
@@ -120,7 +150,7 @@ class Person:
             decrease = 7 - len(mp_string)
 
             while decrease > 0:
-                current_mp += " "
+                current_mp += " " # Adds whitespaces in the begining of MP Bar
                 decrease -= 1
             current_mp += mp_string
 
