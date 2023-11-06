@@ -176,9 +176,11 @@ class Person:
     def choose_enemy_spell(self):
         magic_choice = random.randrange(0, len(self.magic))
         spell = self.magic[magic_choice]
-        magic_dmg = spell.generate_damage()
+        magic_dmg = spell.generate_dmg()  # Move this line inside the if condition
 
-        if self.mp < spell.cost:
-            self.choose_enemy_spell()
+        pct = self.hp / self.maxhp * 100
+
+        if self.mp < spell.cost or spell.type == "white" and pct > 50:
+            return self.choose_enemy_spell()  # Recursively call the method until enough MP is available
         else:
-            return spell, magic_dmg
+            return spell, magic_dmg  # Return both the spell and magic damage

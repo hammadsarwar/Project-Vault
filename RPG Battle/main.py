@@ -13,6 +13,7 @@ quake = Spell("Quake", 14, 140, "black")
 # Create White Magic
 cure = Spell("Cure", 12, 120, "white")
 cura = Spell("Cure", 18, 200, "white")
+curaga = Spell("Curaga", 50, 6000, "white")
 
 # Create some Item
 potion = Item("Potion", "potion", "Heals 50 HP", 50)
@@ -24,7 +25,7 @@ hielixer = Item("MegaElixer", "elixer", "Fully restores party's HP/MP", 9999)
 grenade = Item("Grenade", "attack", "Deals 500 damage", 500)
 
 player_spells = [fire, thunder, blizzard, meteor, cure, cura]
-enemy_spells = [fire, meteor, cure]
+enemy_spells = [fire, meteor, curaga]
 player_items = [{"item" : potion, "quantity" : 15}, {"item" : hipotion, "quantity" : 5},
                 {"item" : superpotion, "quantity" : 5}, {"item" : elixer, "quantity" : 5},
                 {"item" : hielixer, "quantity" : 2}, {"item" : grenade, "quantity" : 5}]
@@ -69,7 +70,7 @@ while running:
             dmg = player.generate_damage()
             enemies[enemy].take_damage(dmg)
 
-            print("You attacked " + enemies[enemy].name.replace(" ", "") + " for", dmg, "points of damage.")
+            print("\nYou attacked " + enemies[enemy].name.replace(" ", "") + " for", dmg, "points of damage.")
 
             if enemies[enemy].get_hp() == 0:
                 print(enemies[enemy].name.replace(" ", "") + " has died.")
@@ -167,16 +168,17 @@ while running:
         print(bcolors.FAIL + "Your enemies have defeated you!" + bcolors.ENDC)
         running = False
 
+    print("\n")
     # Enemy attack phase
     for enemy in enemies:
-        enemy_choice = random.randrange(0, 3)
+        enemy_choice = random.randrange(0, 2)
 
         if enemy_choice == 0:
             target = random.randrange(0, 3) # It will select random player index
             enemy_dmg = enemy.generate_damage()
 
             players[target].take_damage(enemy_dmg)  # Feed it here as an index to damage any random player
-            print(enemy.name.replace(" ", "") + " attacks " + players[target].name.replace(" ", "") + "for", enemy_dmg, "points of damage.")
+            print(enemy.name.replace(" ", "") + " attacks " + players[target].name.replace(" ", "") + " for", enemy_dmg, "points of damage.")
 
         elif enemy_choice == 1:
             spell, magic_dmg = enemy.choose_enemy_spell()
@@ -184,15 +186,15 @@ while running:
 
             if spell.type == "white":
                 enemy.heal(magic_dmg)
-                print(bcolors.OKBLUE + "\n" + spell.name + " heals" + enemy.name +  "for" + str(magic_dmg), "HP." + bcolors.ENDC)
+                print(bcolors.OKBLUE + spell.name + " heals " + enemy.name +  "for" + str(magic_dmg), "HP." + bcolors.ENDC)
 
             elif spell.type == "black":
-                target = random.rangrange(0, 3)
+                target = random.randrange(0, 3)
                 players[target].take_damage(magic_dmg)
 
 
-                print(bcolors.OKBLUE + enemy.name.replace(" ", "") + "'s" + spell.name + " deals", str(magic_dmg), "points of damage to " + enemies[enemy].name.replace(" ", "") + bcolors.ENDC)
+                print(bcolors.OKBLUE + "\n" + enemy.name.replace(" ", "") + spell.name + " deals", str(magic_dmg), "points of damage to " + players[target].name.replace(" ", "") + bcolors.ENDC)
 
                 if players[target].get_hp() == 0:
                     print(players[target].name.replace(" ", "") + " has died.")
-                    del players[player]
+                    del players[target]
